@@ -1,8 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const app = express();
 const Corbado = require('@corbado/node-sdk');
 require('dotenv').config()
+
+const app = express();
 
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
@@ -13,17 +14,20 @@ app.use(cors()); // handle CORS issue
 app.use(express.json());
 
 app.post('/api/createAssociationToken', async (req, res) => {
-
-    console.log(req.body)
     const {loginIdentifier, loginIdentifierType} = req.body;
     const clientInfo = corbado.utils.getClientInfo(req);
+
     try {
         const associationToken = await corbado.associationTokens.create(loginIdentifier, loginIdentifierType, clientInfo);
-        console.log("Result ist :", associationToken.data);
-        res.send(associationToken?.data?.token).status(200);
+
+        if (associationToken?.data?.token) {
+            return res.status(200).send(associationToken.data.token);
+        } else {
+            return res.status(500).send({error: 'Association token creation unsuccessful'});
+        }
     } catch (err) {
         console.log(err)
-        res.send("Error occured.").status(500);
+        res.status(500).send({error: 'An error occurred while creating the association token'});
     }
 });
 
