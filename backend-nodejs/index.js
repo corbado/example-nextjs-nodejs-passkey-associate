@@ -17,11 +17,9 @@ app.post('/api/createAssociationToken', async (req, res) => {
     console.log(req.body)
     const {loginIdentifier, loginIdentifierType} = req.body;
     const clientInfo = corbado.utils.getClientInfo(req);
-
     try {
-        console.log(corbado)
         const associationToken = await corbado.associationTokens.create(loginIdentifier, loginIdentifierType, clientInfo);
-        console.log(associationToken.data.token);
+        console.log("Result ist :", associationToken.data);
         res.send(associationToken?.data?.token).status(200);
     } catch (err) {
         console.log(err)

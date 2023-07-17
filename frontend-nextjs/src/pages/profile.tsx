@@ -1,12 +1,19 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 import axios from "axios";
 
-export default function Profile() {
-    const [associateToken, setAssociateToken] = useState();
-    const [ref, setRef] = useState()
+interface AssociationToken {
+    associationToken: string;
+}
 
-    const onAuthEvent = useCallback((_event) => {
-        console.log(_event)
+interface EventDetail {
+    type: string;
+}
+
+export default function Profile() {
+    const [associationToken, setAssociationToken] = useState<AssociationToken | null>(null);
+    const [ref, setRef] = useState<any | null>(null);
+
+    const onAuthEvent = useCallback((_event: CustomEvent<EventDetail[]>) => {
         switch (_event.detail[0].type) {
             case "PASSKEY_CREATION_SUCCESSFUL":
                 console.log("passkey creation successful");
@@ -34,20 +41,17 @@ export default function Profile() {
                 ref.removeEventListener('auth', onAuthEvent)
             }
         };
-
     }, [ref, onAuthEvent])
 
 
     const handleButtonClick = async () => {
         try {
             // loginIdentifier & loginIdentifierType need to be obtained via a backend call or your current state / session management
-            const response = await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
-                loginIdentifier: "vincent+2@corbado.com",
+            const response = await axios.post<AssociationToken>(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
+                loginIdentifier: "vincent+12@corbado.com",
                 loginIdentifierType: "email"
             })
-
-            // @ts-ignore
-            setAssociateToken(response.data);
+            setAssociationToken(response.data);
         } catch (err) {
             console.log(err)
         }
@@ -59,12 +63,14 @@ export default function Profile() {
             <p>This page is only accessible for users that have been authenticated with your existing authentication
                 system.</p>
             <button onClick={handleButtonClick}>Add passkey to my account</button>
-            {associateToken &&
+
+            {associationToken &&
                 <corbado-passkey-associate
-                    ref={setRef}
                     project-id={process.env.NEXT_PUBLIC_PROJECT_ID}
-                    association-token={associateToken}
+                    association-token={associationToken}
+                    ref={setRef}
                 />}
+
         </div>
     )
 }

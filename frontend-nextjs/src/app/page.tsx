@@ -1,11 +1,14 @@
 'use client'
 import React, {useEffect, useCallback, useState} from "react";
 
-export default function Home() {
-    const [ref, setRef] = useState()
+interface EventDetail {
+    type: string;
+}
 
-    const onAuthEvent = useCallback((_event) => {
-        console.log(_event)
+export default function Home() {
+    const [ref, setRef] = useState<any | null>(null);
+
+    const onAuthEvent = useCallback((_event: CustomEvent<EventDetail[]>) => {
         switch (_event.detail[0].type) {
             case "PASSKEY_LOGIN_SUCCESSFUL":
                 console.log("passkey login successful");
@@ -23,21 +26,16 @@ export default function Home() {
 
     useEffect(() => {
         if (ref) {
-            ref.addEventListener('passkey-not-exists', onPasskeyNotExists)
-            ref.addEventListener('passkey-login-successful', onPasskeyLoginSuccessful)
-            ref.addEventListener('passkey-login-failed', onPasskeyLoginFailed)
+            ref.addEventListener('auth', onAuthEvent)
         }
 
         // Cleanup function
         return () => {
             if (ref) {
-                ref.removeEventListener('passkey-not-exists', onPasskeyNotExists)
-                ref.removeEventListener('passkey-login-successful', onPasskeyLoginSuccessful)
-                ref.removeEventListener('passkey-login-failed', onPasskeyLoginFailed)
+                ref.removeEventListener('auth', onAuthEvent)
             }
         };
-
-    }, [ref, onPasskeyNotExists, onPasskeyLoginSuccessful, onPasskeyLoginFailed])
+    }, [ref, onAuthEvent])
 
     return (
         <div>
