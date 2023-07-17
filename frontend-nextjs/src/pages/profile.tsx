@@ -1,3 +1,4 @@
+'use client';
 import React, {useState, useEffect, useCallback, useRef} from "react";
 import axios from "axios";
 
@@ -31,6 +32,10 @@ export default function Profile() {
 
 
     useEffect(() => {
+        // This will run only on client-side
+
+        import ('@corbado/webcomponent');
+
         if (ref) {
             ref.addEventListener('auth', onAuthEvent)
         }
@@ -48,7 +53,7 @@ export default function Profile() {
         try {
             // loginIdentifier & loginIdentifierType need to be obtained via a backend call or your current state / session management
             const response = await axios.post<AssociationToken>(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
-                loginIdentifier: "vincent+12@corbado.com",
+                loginIdentifier: "vincent+13@corbado.com",
                 loginIdentifierType: "email"
             })
             setAssociationToken(response.data);

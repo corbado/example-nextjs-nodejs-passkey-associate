@@ -1,5 +1,7 @@
 'use client'
 import React, {useEffect, useCallback, useState} from "react";
+import '@corbado/webcomponent/pkg/auth_cui.css'
+import '@corbado/webcomponent';
 
 interface EventDetail {
     type: string;
@@ -25,6 +27,8 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+        // This will run only on client-side
+
         if (ref) {
             ref.addEventListener('auth', onAuthEvent)
         }
@@ -39,7 +43,7 @@ export default function Home() {
 
     return (
         <div>
-            <script src="https://pro-1816608956215787878.frontendapi.corbado.io/auth.js"></script>
+            {/*<script src="https://pro-1816608956215787878.frontendapi.corbado.io/auth.js"></script>*/}
             <h1>Welcome</h1>
             <p>This page serves as a login page. Besides passkey login, you can offer also your traditional login with
                 e.g. passwords here.</p>
