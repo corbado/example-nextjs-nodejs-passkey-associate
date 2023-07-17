@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import axios from "axios";
 
 export default function Profile() {
@@ -39,8 +39,8 @@ export default function Profile() {
 
     const handleButtonClick = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/api/createAssociationToken", {
-                loginIdentifier: "test5@web.de",
+            const response = await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
+                loginIdentifier: "vincent+2@corbado.com",
                 loginIdentifierType: "email"
             })
 

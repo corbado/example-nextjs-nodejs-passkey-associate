@@ -1,53 +1,39 @@
 'use client'
-import React, {useRef, useEffect, useCallback} from "react";
+import React, {useEffect, useCallback, useState} from "react";
 
 export default function Home() {
-    const refPasskeyAssociateLogin = useRef();
+    const [ref, setRef] = useState()
 
-    // @ts-ignore
-    const handleEvent = useCallback((event) => {
-        switch (event.detail[0].type) {
-            case "PASSKEY_LOGIN_SUCCESSFUL": {
-                console.log("PASSKEY_LOGIN_SUCCESSFUL");
-                break;
-            }
-            case "PASSKEY_LOGIN_FAILED": {
-                console.log("PASSKEY_CREATION_FAILED");
-                break;
-            }
-            case "PASSKEY_NOT_EXISTS": {
-                console.log("PASSKEY_NOT_EXISTS");
-                break;
-            }
-            default:
-                console.log("default")
-        }
-    }, []);
+    const onPasskeyNotExists = useCallback((_event) => {
+        console.log("passkey for this user and device does not exists")
+    }, [])
+
+    const onPasskeyLoginFailed = useCallback((event) => {
+        console.log("passkey login not successful due to this error")
+        console.error(event.detail)
+    }, [])
+
+    const onPasskeyLoginSuccessful = useCallback((_event) => {
+        console.log("passkey login successful")
+    }, [])
 
     useEffect(() => {
-        const element = refPasskeyAssociateLogin.current;
-        const events = ['passkey-not-exists', 'passkey-login-successful', 'passkey-login-failed'];
-
-
-        if (element) {
-            events.forEach(event => {
-                // @ts-ignore
-                element.addEventListener(event, handleEvent);
-            })
+        if (ref) {
+            ref.addEventListener('passkey-not-exists', onPasskeyNotExists)
+            ref.addEventListener('passkey-login-successful', onPasskeyLoginSuccessful)
+            ref.addEventListener('passkey-login-failed', onPasskeyLoginFailed)
         }
-
 
         // Cleanup function
         return () => {
-            if (element) {
-                events.forEach(event => {
-                    // @ts-ignore
-                    element.removeEventListener(event, handleEvent);
-                })
+            if (ref) {
+                ref.removeEventListener('passkey-not-exists', onPasskeyNotExists)
+                ref.removeEventListener('passkey-login-successful', onPasskeyLoginSuccessful)
+                ref.removeEventListener('passkey-login-failed', onPasskeyLoginFailed)
             }
-
         };
-    }, [handleEvent])
+
+    }, [ref, onPasskeyNotExists, onPasskeyLoginSuccessful, onPasskeyLoginFailed])
 
     return (
         <div>
@@ -57,7 +43,7 @@ export default function Home() {
                 e.g. passwords here.</p>
             <corbado-passkey-associate-login
                 project-id={process.env.NEXT_PUBLIC_PROJECT_ID}
-                ref={refPasskeyAssociateLogin}
+                ref={setRef}
             />
         </div>
 

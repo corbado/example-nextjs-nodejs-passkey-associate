@@ -4,13 +4,8 @@ const app = express();
 const Corbado = require('@corbado/node-sdk');
 require('dotenv').config()
 
-
-
-
 const projectID = process.env.PROJECT_ID;
 const apiSecret = process.env.API_SECRET;
-console.log(projectID)
-console.log(apiSecret)
 const config = new Corbado.Configuration(projectID, apiSecret);
 const corbado = new Corbado.SDK(config);
 
