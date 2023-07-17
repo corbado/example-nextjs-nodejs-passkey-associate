@@ -5,40 +5,42 @@ export default function Profile() {
     const [associateToken, setAssociateToken] = useState();
     const [ref, setRef] = useState()
 
-    const onDeviceNotPasskeyReady = useCallback((_event) => {
-        console.log("device is not ready for passkeys")
+    const onAuthEvent = useCallback((_event) => {
+        console.log(_event)
+        switch (_event.detail[0].type) {
+            case "PASSKEY_CREATION_SUCCESSFUL":
+                console.log("passkey creation successful");
+                break;
+            case "PASSKEY_CREATION_FAILED":
+                console.log("passkey creation failed");
+                break;
+            case "DEVICE_NOT_PASSKEY_READY":
+                console.log("device not passkey ready");
+                break;
+            default:
+                console.log("default")
+        }
     }, [])
 
-    const onPasskeyCreationFailed = useCallback((event) => {
-        console.log("passkey could not be created due to this error")
-        console.error(event.detail)
-    }, [])
-
-    const onPasskeyCreationSuccessful = useCallback((_event) => {
-        console.log("passkey was created successfully")
-    }, [])
 
     useEffect(() => {
         if (ref) {
-            ref.addEventListener('device-not-passkey-ready', onDeviceNotPasskeyReady)
-            ref.addEventListener('passkey-creation-successful', onPasskeyCreationSuccessful)
-            ref.addEventListener('passkey-creation-failed', onPasskeyCreationFailed)
+            ref.addEventListener('auth', onAuthEvent)
         }
 
         // Cleanup function
         return () => {
             if (ref) {
-                ref.removeEventListener('device-not-passkey-ready', onDeviceNotPasskeyReady)
-                ref.removeEventListener('passkey-creation-successful', onPasskeyCreationSuccessful)
-                ref.removeEventListener('passkey-creation-failed', onPasskeyCreationFailed)
+                ref.removeEventListener('auth', onAuthEvent)
             }
         };
 
-    }, [ref, onDeviceNotPasskeyReady, onPasskeyCreationSuccessful, onPasskeyCreationFailed])
+    }, [ref, onAuthEvent])
 
 
     const handleButtonClick = async () => {
         try {
+            // loginIdentifier & loginIdentifierType need to be obtained via a backend call or your current state / session management
             const response = await axios.post(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
                 loginIdentifier: "vincent+2@corbado.com",
                 loginIdentifierType: "email"

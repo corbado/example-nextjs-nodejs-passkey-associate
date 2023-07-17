@@ -4,17 +4,21 @@ import React, {useEffect, useCallback, useState} from "react";
 export default function Home() {
     const [ref, setRef] = useState()
 
-    const onPasskeyNotExists = useCallback((_event) => {
-        console.log("passkey for this user and device does not exists")
-    }, [])
-
-    const onPasskeyLoginFailed = useCallback((event) => {
-        console.log("passkey login not successful due to this error")
-        console.error(event.detail)
-    }, [])
-
-    const onPasskeyLoginSuccessful = useCallback((_event) => {
-        console.log("passkey login successful")
+    const onAuthEvent = useCallback((_event) => {
+        console.log(_event)
+        switch (_event.detail[0].type) {
+            case "PASSKEY_LOGIN_SUCCESSFUL":
+                console.log("passkey login successful");
+                break;
+            case "PASSKEY_LOGIN_FAILED":
+                console.log("passkey login failed");
+                break;
+            case "PASSKEY_NOT_EXISTS":
+                console.log("passkey not exists");
+                break;
+            default:
+                console.log("default")
+        }
     }, [])
 
     useEffect(() => {
