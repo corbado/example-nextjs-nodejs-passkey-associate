@@ -8,4 +8,4 @@ declare namespace JSX {
     }
 }
 
-declare module '@corbado/webcomponent';
+declare module '@corbado/webcomponent'

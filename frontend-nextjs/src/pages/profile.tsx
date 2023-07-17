@@ -1,30 +1,32 @@
-'use client';
-import React, {useState, useEffect, useCallback, useRef} from "react";
-import axios from "axios";
+'use client'
+
+import React, {useState, useEffect, useCallback} from "react"
+import axios from "axios"
+import ('@corbado/webcomponent')
 
 interface AssociationToken {
-    associationToken: string;
+    associationToken: string
 }
 
 interface EventDetail {
-    type: string;
+    type: string
 }
 
 export default function Profile() {
-    const [associationToken, setAssociationToken] = useState<AssociationToken | null>(null);
-    const [ref, setRef] = useState<any | null>(null);
+    const [associationToken, setAssociationToken] = useState<AssociationToken | null>(null)
+    const [ref, setRef] = useState<any | null>(null)
 
     const onAuthEvent = useCallback((_event: CustomEvent<EventDetail[]>) => {
         switch (_event.detail[0].type) {
             case "PASSKEY_CREATION_SUCCESSFUL":
-                console.log("passkey creation successful");
-                break;
+                console.log("passkey creation successful")
+                break
             case "PASSKEY_CREATION_FAILED":
-                console.log("passkey creation failed");
-                break;
+                console.log("passkey creation failed")
+                break
             case "DEVICE_NOT_PASSKEY_READY":
-                console.log("device not passkey ready");
-                break;
+                console.log("device not passkey ready")
+                break
             default:
                 console.log("default")
         }
@@ -33,8 +35,6 @@ export default function Profile() {
 
     useEffect(() => {
         // This will run only on client-side
-
-        import ('@corbado/webcomponent');
 
         if (ref) {
             ref.addEventListener('auth', onAuthEvent)
@@ -45,7 +45,7 @@ export default function Profile() {
             if (ref) {
                 ref.removeEventListener('auth', onAuthEvent)
             }
-        };
+        }
     }, [ref, onAuthEvent])
 
 
@@ -53,10 +53,10 @@ export default function Profile() {
         try {
             // loginIdentifier & loginIdentifierType need to be obtained via a backend call or your current state / session management
             const response = await axios.post<AssociationToken>(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
-                loginIdentifier: "vincent+13@corbado.com",
+                loginIdentifier: "vincent+16@corbado.com",
                 loginIdentifierType: "email"
             })
-            setAssociationToken(response.data);
+            setAssociationToken(response.data)
         } catch (err) {
             console.log(err)
         }
