@@ -1,7 +1,6 @@
 'use client'
 
 import React, {useEffect, useCallback, useState} from "react"
-import '@corbado/webcomponent'
 
 const PASSKEY_LOGIN_SUCCESSFUL = "PASSKEY_LOGIN_SUCCESSFUL"
 const PASSKEY_LOGIN_FAILED = "PASSKEY_LOGIN_FAILED"
@@ -27,6 +26,8 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+        import ('@corbado/webcomponent')
+
         if (ref) {
             ref.addEventListener(PASSKEY_LOGIN_SUCCESSFUL, onPasskeyLoginSuccessful)
             ref.addEventListener(PASSKEY_LOGIN_FAILED, onPasskeyLoginFailed)
