@@ -4,6 +4,10 @@ import React, {useState, useEffect, useCallback} from "react"
 import axios from "axios"
 import ('@corbado/webcomponent')
 
+const PASSKEY_CREATION_SUCCESSFUL = "PASSKEY_CREATION_SUCCESSFUL"
+const PASSKEY_CREATION_FAILED = "PASSKEY_CREATION_FAILED"
+const DEVICE_NOT_PASSKEY_READY = "DEVICE_NOT_PASSKEY_READY"
+
 interface AssociationToken {
     associationToken: string
 }
@@ -31,6 +35,33 @@ export default function Profile() {
                 console.log("default")
         }
     }, [])
+
+    const onPasskeyLoginnFailed = useCallback((_event: CustomEvent<EventDetail>) => {
+        console.log(_event)
+    }, [])
+
+    const onPasskeyNotExists = useCallback((_event: CustomEvent<EventDetail>) => {
+        console.log(_event)
+    }, [])
+
+    useEffect(() => {
+        // This will run only on client-side
+
+        if (ref) {
+            ref.addEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
+            ref.addEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
+            ref.addEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+        }
+
+        // Cleanup function
+        return () => {
+            if (ref) {
+                ref.removeEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
+                ref.removeEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
+                ref.removeEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+            }
+        };
+    }, [ref, onPasskeyCreationSuccessful, onPasskeyCreationFailed, onDeviceNotPasskeyReady])
 
 
     useEffect(() => {
