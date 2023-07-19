@@ -3,13 +3,11 @@
 import React, {useEffect, useCallback, useState} from "react"
 import '@corbado/webcomponent'
 
-const PASSKEY_CREATION_SUCCESSFUL = "PASSKEY_CREATION_SUCCESSFUL"
-const PASSKEY_CREATION_FAILED = "PASSKEY_CREATION_FAILED"
-const DEVICE_NOT_PASSKEY_READY = "DEVICE_NOT_PASSKEY_READY"
+const PASSKEY_LOGIN_SUCCESSFUL = "PASSKEY_LOGIN_SUCCESSFUL"
+const PASSKEY_LOGIN_FAILED = "PASSKEY_LOGIN_FAILED"
+const PASSKEY_NOT_EXISTS = "PASSKEY_NOT_EXISTS"
 
 interface EventDetail {
-
-
     type: any;
 }
 
@@ -20,7 +18,7 @@ export default function Home() {
         console.log(_event)
     }, [])
 
-    const onPasskeyLoginnFailed = useCallback((_event: CustomEvent<EventDetail>) => {
+    const onPasskeyLoginFailed = useCallback((_event: CustomEvent<EventDetail>) => {
         console.log(_event)
     }, [])
 
@@ -29,24 +27,22 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        // This will run only on client-side
-
         if (ref) {
-            ref.addEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
-            ref.addEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
-            ref.addEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+            ref.addEventListener(PASSKEY_LOGIN_SUCCESSFUL, onPasskeyLoginSuccessful)
+            ref.addEventListener(PASSKEY_LOGIN_FAILED, onPasskeyLoginFailed)
+            ref.addEventListener(PASSKEY_NOT_EXISTS, onPasskeyNotExists)
         }
 
         // Cleanup function
         return () => {
             if (ref) {
-                ref.removeEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
-                ref.removeEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
-                ref.removeEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+                ref.removeEventListener(PASSKEY_LOGIN_SUCCESSFUL, onPasskeyLoginSuccessful)
+                ref.removeEventListener(PASSKEY_LOGIN_FAILED, onPasskeyLoginFailed)
+                ref.removeEventListener(PASSKEY_NOT_EXISTS, onPasskeyNotExists)
             }
 
         };
-    }, [ref, onPasskeyCreationSuccessful, onPasskeyCreationFailed, onDeviceNotPasskeyReady])
+    }, [ref, onPasskeyLoginSuccessful, onPasskeyLoginFailed, onPasskeyNotExists])
 
     return (
         <div>

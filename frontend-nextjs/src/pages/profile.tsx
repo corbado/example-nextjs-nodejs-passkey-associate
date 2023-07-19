@@ -2,6 +2,7 @@
 
 import React, {useState, useEffect, useCallback} from "react"
 import axios from "axios"
+
 import ('@corbado/webcomponent')
 
 const PASSKEY_CREATION_SUCCESSFUL = "PASSKEY_CREATION_SUCCESSFUL"
@@ -20,64 +21,34 @@ export default function Profile() {
     const [associationToken, setAssociationToken] = useState<AssociationToken | null>(null)
     const [ref, setRef] = useState<any | null>(null)
 
-    const onAuthEvent = useCallback((_event: CustomEvent<EventDetail[]>) => {
-        switch (_event.detail[0].type) {
-            case "PASSKEY_CREATION_SUCCESSFUL":
-                console.log("passkey creation successful")
-                break
-            case "PASSKEY_CREATION_FAILED":
-                console.log("passkey creation failed")
-                break
-            case "DEVICE_NOT_PASSKEY_READY":
-                console.log("device not passkey ready")
-                break
-            default:
-                console.log("default")
-        }
-    }, [])
-
-    const onPasskeyLoginnFailed = useCallback((_event: CustomEvent<EventDetail>) => {
+    const onPasskeyCreationSuccessful = useCallback((_event: CustomEvent<EventDetail>) => {
         console.log(_event)
     }, [])
 
-    const onPasskeyNotExists = useCallback((_event: CustomEvent<EventDetail>) => {
+    const onPasskeyCreationFailed = useCallback((_event: CustomEvent<EventDetail>) => {
+        console.log(_event)
+    }, [])
+
+    const onDeviceNotPasskeyReady = useCallback((_event: CustomEvent<EventDetail>) => {
         console.log(_event)
     }, [])
 
     useEffect(() => {
-        // This will run only on client-side
-
         if (ref) {
             ref.addEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
-            ref.addEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
-            ref.addEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+            ref.addEventListener(PASSKEY_CREATION_FAILED, onPasskeyCreationFailed)
+            ref.addEventListener(DEVICE_NOT_PASSKEY_READY, onDeviceNotPasskeyReady)
         }
 
         // Cleanup function
         return () => {
             if (ref) {
                 ref.removeEventListener(PASSKEY_CREATION_SUCCESSFUL, onPasskeyCreationSuccessful)
-                ref.removeEventListener(PASSKEY_CREATION_FAILED,onPasskeyCreationFailed)
-                ref.removeEventListener(DEVICE_NOT_PASSKEY_READY, onPasskeyNotExists)
+                ref.removeEventListener(PASSKEY_CREATION_FAILED, onPasskeyCreationFailed)
+                ref.removeEventListener(DEVICE_NOT_PASSKEY_READY, onDeviceNotPasskeyReady)
             }
         };
     }, [ref, onPasskeyCreationSuccessful, onPasskeyCreationFailed, onDeviceNotPasskeyReady])
-
-
-    useEffect(() => {
-        // This will run only on client-side
-
-        if (ref) {
-            ref.addEventListener('auth', onAuthEvent)
-        }
-
-        // Cleanup function
-        return () => {
-            if (ref) {
-                ref.removeEventListener('auth', onAuthEvent)
-            }
-        }
-    }, [ref, onAuthEvent])
 
 
     const handleButtonClick = async () => {
@@ -106,7 +77,6 @@ export default function Profile() {
                     association-token={associationToken}
                     ref={setRef}
                 />}
-
         </div>
     )
 }
