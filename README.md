@@ -70,4 +70,4 @@ npm i
 node index.js
 ```
 
-THe application should now be running on your local machine.
+The application should now be running on your local machine.
