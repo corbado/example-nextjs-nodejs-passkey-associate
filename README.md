@@ -33,7 +33,7 @@ install [Next.js](https://nextjs.org/learn/basics/create-nextjs-app) if you have
 npx create-next-app@latext
 ```
 
-### Navigate to the frontend folder
+### Navigate to the frontend folder:
 
 ```bash
 cd frontend-nextjs
@@ -64,7 +64,7 @@ cd ../backend-nodejs
 npm i
 ```
 
-### Start the backend
+### Start the backend:
 
 ```bash
 node index.js
