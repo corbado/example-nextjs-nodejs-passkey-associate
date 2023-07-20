@@ -30,7 +30,7 @@ install [Next.js](https://nextjs.org/learn/basics/create-nextjs-app) if you have
 ### Install Next.js:
 
 ```bash
-npx create-next-app@latext
+npx create-next-app@latest
 ```
 
 ### Navigate to the frontend folder:
