@@ -26,7 +26,7 @@ You need to have [Node](https://nodejs.org/en/download) and `npm` installed to r
 install [Next.js](https://nextjs.org/learn/basics/create-nextjs-app) if you haven't done so.
 
 ## Usage
-
+> :warning: **Email address change**: Please note, that you need to change the email address in `/frontend-nextjs/src/pages/profile.tsx` (dynamically) to test the association token creation process and thus the passkey associate process multiple times.
 
 ### Navigate to the frontend folder:
 
