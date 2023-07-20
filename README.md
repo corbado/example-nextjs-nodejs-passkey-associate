@@ -72,4 +72,4 @@ npm i
 node index.js
 ```
 
-The application should now be running on your local machine, with your backend runngin on `PORT=3001`.
+The application should now be running on your local machine, with your backend running on `PORT=3001`.
