@@ -35,7 +35,7 @@ cd frontend-nextjs
 ```
 
 ### Create frontend .env file
-Copy the `.env.example` file, rename it to `.env` and fill the values for `NEXT_PUBLIC_PROJECT_ID` with your Corbado project ID you obtained in #prerequisites and `NEXT_PUBLIC_API_BASE_URL` with the URL of your backend. The default value for this repository is `http://localhost:3001`.
+Copy the `.env.example` file, rename it to `.env` and fill the values for `NEXT_PUBLIC_PROJECT_ID` with your Corbado project ID you obtained in [prerequisites](#prerequisites) and `NEXT_PUBLIC_API_BASE_URL` with the URL of your backend. The default value for this repository is `http://localhost:3001`.
 
 ### Run
 
@@ -58,7 +58,7 @@ cd ../backend-nodejs
 ```
 
 ### Create backend .env file
-Copy the `.env.example` file, rename it to `.env` and fill the values for `PROJECT_ID` and `API_SECRET` with your Corbado project ID and API secret you obtained in #prerequisites.
+Copy the `.env.example` file, rename it to `.env` and fill the values for `PROJECT_ID` and `API_SECRET` with your Corbado project ID and API secret you obtained in [prerequisites](#prerequisites).
 
 ### Install dependencies:
 
