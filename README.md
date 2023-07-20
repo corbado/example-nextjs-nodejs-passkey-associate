@@ -27,17 +27,15 @@ install [Next.js](https://nextjs.org/learn/basics/create-nextjs-app) if you have
 
 ## Usage
 
-### Install Next.js:
-
-```bash
-npx create-next-app@latest
-```
 
 ### Navigate to the frontend folder:
 
 ```bash
 cd frontend-nextjs
 ```
+
+### Create frontend .env file
+Copy the `.env.example` file, rename it to `.env` and fill the values for `NEXT_PUBLIC_PROJECT_ID` with your Corbado project ID you obtained in #prerequisites and `NEXT_PUBLIC_API_BASE_URL` with the URL of your backend. The default value for this repository is `http://localhost:3001`.
 
 ### Run
 
@@ -51,12 +49,16 @@ to install  all dependencies.
 ```bash
 npm run dev
 ```
+This starts the frontend on `PORT=3000`.
 
 Now, open a new terminal and navigate to the backend folder:
 
 ```bash
 cd ../backend-nodejs
 ```
+
+### Create backend .env file
+Copy the `.env.example` file, rename it to `.env` and fill the values for `PROJECT_ID` and `API_SECRET` with your Corbado project ID and API secret you obtained in #prerequisites.
 
 ### Install dependencies:
 
@@ -70,4 +72,4 @@ npm i
 node index.js
 ```
 
-The application should now be running on your local machine.
+The application should now be running on your local machine, with your backend runngin on `PORT=3001`.
