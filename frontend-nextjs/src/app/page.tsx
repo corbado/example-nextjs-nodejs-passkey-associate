@@ -3,6 +3,7 @@
 import React, {useEffect, useCallback, useState} from "react"
 import Layout from '../components/Layout'
 
+
 const PASSKEY_LOGIN_SUCCESSFUL = "PASSKEY_LOGIN_SUCCESSFUL"
 const PASSKEY_LOGIN_FAILED = "PASSKEY_LOGIN_FAILED"
 const PASSKEY_NOT_EXISTS = "PASSKEY_NOT_EXISTS"
@@ -13,6 +14,7 @@ interface EventDetail {
 
 export default function Home() {
     const [ref, setRef] = useState<any | null>(null)
+    const [session, setSession] = useState<any>(null);
 
     // The following event handlers can be used to react to different events from the web component
     const onPasskeyLoginSuccessful = useCallback((_event: CustomEvent<EventDetail>) => {
@@ -27,10 +29,30 @@ export default function Home() {
         console.log(_event)
     }, [])
 
-    // Create and remove the event listeners
     useEffect(() => {
-        import ('@corbado/webcomponent')
+        // This will run only on client-side
+        import('@corbado/webcomponent')
+            .then(module => {
+                const Corbado = module.default || module;
+                setSession(new Corbado.Session(process.env.NEXT_PUBLIC_PROJECT_ID));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, [])
 
+    useEffect(() => {
+        // Refresh the session whenever it changes
+        if (session) {
+            session.refresh(() => {
+            });
+        }
+    }, [session]);
+
+
+    useEffect(() => {
+
+        // Create and remove the event listeners
         if (ref) {
             ref.addEventListener(PASSKEY_LOGIN_SUCCESSFUL, onPasskeyLoginSuccessful)
             ref.addEventListener(PASSKEY_LOGIN_FAILED, onPasskeyLoginFailed)
@@ -46,7 +68,7 @@ export default function Home() {
             }
 
         };
-    }, [ref, onPasskeyLoginSuccessful, onPasskeyLoginFailed, onPasskeyNotExists])
+    }, [ref, onPasskeyLoginSuccessful, onPasskeyLoginFailed, onPasskeyNotExists,])
 
     return (
         <Layout>

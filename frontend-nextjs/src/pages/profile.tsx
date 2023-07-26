@@ -66,7 +66,7 @@ export default function Profile() {
             // loginIdentifier needs to be obtained via a backend call or your current state / session management
             // it should be a dynamic value depending on the current logged-in user
             const response = await axios.post<AssociationToken>(process.env.NEXT_PUBLIC_API_BASE_URL + "/api/createAssociationToken", {
-                loginIdentifier: "vincent+19@corbado.com",
+                loginIdentifier: "vincent+20@corbado.com",
                 loginIdentifierType: "email"
             })
             setAssociationToken(response.data)
